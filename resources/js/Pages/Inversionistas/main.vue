@@ -17,7 +17,8 @@
     nombreArchivo: '',
     descripcion: '',
     status: '1',
-    archivo:null
+    archivo:null,
+    autor:''
     });
 
     const fileInput = ref(null);
@@ -80,6 +81,8 @@
                         <TextInput style="border:1px solid black" v-model="archivo.nombreArchivo" required></TextInput>
                         <InputLabel  >Descripcion</InputLabel>
                         <TextInput style="border:1px solid black" required v-model="archivo.descripcion"></TextInput>
+                        <InputLabel >Autor</InputLabel>
+                        <TextInput style="border:1px solid black" v-model="archivo.autor" required></TextInput>
                         <InputLabel required>Archivo</InputLabel>
                         <input type="file" enctype="multipart/form-data"
                          @change="previewFiles"

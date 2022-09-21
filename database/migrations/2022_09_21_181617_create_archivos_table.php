@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('archivos', function (Blueprint $table) {
             $table->id();
+            $table->string('tipoDeArchivo');
+            $table->string('descripcion');
+            $table->string('autor');
             $table->timestamps();
         });
     }
