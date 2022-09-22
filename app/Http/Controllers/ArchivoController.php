@@ -36,8 +36,17 @@ class ArchivoController extends Controller
     public function store(Request $request)
     {
         //
-        $datosSolicitud =request();
-        return $datosSolicitud;
+        if($request->hasFile(key:'archivo'))
+        {
+           $file = $request->archivo->store('public/archivos'); //guardamos el archivo en el storage
+           
+           $datosArchivo =request()->except('archivo'); //recuperamos todo excepto el archivo
+           
+           archivo::insert($datosArchivo,$file);
+
+           return  redirect()->back();
+        }
+
     }
 
     /**

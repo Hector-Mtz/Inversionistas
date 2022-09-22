@@ -9,28 +9,42 @@
     import InputLabel from '../../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Components/InputLabel.vue';
     import TextInput from '../../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Components/TextInput.vue';
     import * as axios from 'axios';
+    import SecondaryButton from '../../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Components/SecondaryButton.vue';
 
     var props = defineProps({});
     
-    const archivo = useForm
+   const archivo = useForm
     ({
     nombreArchivo: '',
     descripcion: '',
     status: '1',
     archivo:null,
-    autor:''
+    autor:'',
+    tipo_archivo:''
     });
 
-    const fileInput = ref(null);
+    const fileUpload = ref(null);
+
+    const selectNewFile = () => 
+    {
+        fileUpload.value.click();
+    };
+
+    const uploadFile = () =>
+    {
+      const file = fileUpload.value.files[0];
+      archivo.archivo = file;
+      console.log(archivo);
+    };
 
     const enviarArchivo =   () => 
     {
-       if(fileInput.value)
-       {
-         archivo.archivo = fileInput.value.files[0];
-       }
-        console.log(archivo.archivo);
-
+        let fields = new FormData();
+        for (let key in archivo)
+        {
+            console.log(archivo[key]);
+            fields.append(key, archivo[key]);     
+        }
         archivo.post(route('archivo.store'), 
        {
          onSuccess: () => closeModal(),
@@ -85,16 +99,14 @@
                         <TextInput style="border:1px solid black" v-model="archivo.autor" required></TextInput>
                         <InputLabel required>Archivo</InputLabel>
                         <input type="file" enctype="multipart/form-data"
-                         @change="previewFiles"
-                         @input="archivo.archivo = $event.target.files[0]"
-                         ref="fileInput">
-                         <br>
+                         ref="fileUpload"
+                         @change="uploadFile">
                         <button style="float:right;" class="mb-3 btn btn-primary" type="submit">Enviar</button>
                     </form>
                     
-                     <JetSecondaryButton  @click="closeModal">
+                     <SecondaryButton  @click="closeModal">
                         Cerrar
-                     </JetSecondaryButton>
+                     </SecondaryButton>
                 </template>
         </ModalInver>
     </template>
