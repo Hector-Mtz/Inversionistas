@@ -36,6 +36,12 @@ class TipoArchivoController extends Controller
     public function store(Request $request)
     {
         //
+        tipoArchivo::create(
+            $request->validate([
+                'nombreTipoArchivo' => ['required', 'max:50'],
+            ])
+        );
+        return  redirect()->back();
     }
 
     /**

@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class tipoArchivo extends Model
 {
     use HasFactory;
+
+    protected $fillable =
+    ['nombreTipoArchivo',
+    ];
 }

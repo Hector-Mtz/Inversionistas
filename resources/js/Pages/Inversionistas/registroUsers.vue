@@ -75,10 +75,10 @@
             <div class="py-12">
                 <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
-                        <PrimaryButton @click="verModal2" style="float:right; margin:1rem">
+                        <PrimaryButton @click="verModal2" style="float:right; margin:2rem">
                             Nuevo Usuario
                         </PrimaryButton>
-                        <DataTable id="table_id" class="display">
+                        <DataTable id="table_id" class="display" style="margin:2rem;">
                              <thead>
                             <tr>
                                 <th>ID</th>

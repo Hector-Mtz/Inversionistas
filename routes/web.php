@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\ArchivoController;
 use App\Http\Controllers\InversionistasController;
+use App\Http\Controllers\TipoArchivoController;
 use App\Http\Controllers\user as ControllersUser;
+use App\Models\archivo;
+use App\Models\tipoArchivo;
 use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -38,7 +41,9 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', function () {
         $users = User::all();
-        return Inertia::render('Dashboard',[ 'users' => $users]);
+        $tipoArchivos = tipoArchivo::all();
+        $archivos = archivo::all();
+        return Inertia::render('Dashboard',[ 'users' => $users, 'tipoArchivos'=> $tipoArchivos, 'archivos'=>$archivos]);
     })->name('dashboard');
 });
 
@@ -46,3 +51,4 @@ Route::apiResource('/main', InversionistasController::class);
 
 Route::apiResource('/archivo', ArchivoController::class);
 Route::apiResource('/user', ControllersUser::class );
+Route::apiResource('/tipoArchivo', TipoArchivoController::class );

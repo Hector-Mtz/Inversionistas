@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('archivos', function (Blueprint $table) {
             $table->id();
-            $table->string('archivo');
+            $table->string('nombreArchivo');
             $table->string('descripcion');
+            $table->integer('status');
+            $table->string('archivo');
             $table->string('autor');
             $table->foreignId('tipo_archivo_id')->constrained('tipo_archivos');
             $table->timestamps();

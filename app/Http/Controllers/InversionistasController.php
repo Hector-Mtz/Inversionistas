@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\archivo;
 use App\Models\inversionistas;
+use App\Models\tipoArchivo;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,7 +18,9 @@ class InversionistasController extends Controller
     public function index()
     {
         //
-        return Inertia::render('Inversionistas/main');
+        $tipoArchivos = tipoArchivo::all();
+        $archivos = archivo::all();
+        return Inertia::render('Inversionistas/main',['tipoArchivos' => $tipoArchivos, 'archivos'=> $archivos]);
     }
 
     /**

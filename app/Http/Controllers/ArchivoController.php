@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\archivo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ArchivoController extends Controller
 {
@@ -39,14 +41,38 @@ class ArchivoController extends Controller
         if($request->hasFile(key:'archivo'))
         {
            $file = $request->archivo->store('public/archivos'); //guardamos el archivo en el storage
-           
            $datosArchivo =request()->except('archivo'); //recuperamos todo excepto el archivo
-           
-           archivo::insert($datosArchivo,$file);
+           $nombreArchivo = $datosArchivo['nombreArchivo'];
+           $descripcion = $datosArchivo['descripcion'];
+           $status = $datosArchivo['status'];
+           $autor = $datosArchivo['autor'];
+           $tipo_archivo = $datosArchivo['tipo_archivo'];
+        
+           DB::insert('insert into archivos 
+           (nombreArchivo, descripcion, status, archivo, autor, tipo_archivo_id) 
+           values (?, ?, ?, ?, ?, ?)',
+           [$nombreArchivo, $descripcion, $status, $file, $autor, $tipo_archivo]);
 
            return  redirect()->back();
         }
 
+    }
+
+    public function downloadFile($x)
+    {
+       $pathFile = public_path().'/storage/archivos/'.$x;
+       return response()->download($pathFile);
+    }
+
+    public function obtenerArchivos($id)
+    {
+        $object = DB::table(DB::raw('archivos'))
+        ->select(DB::raw(
+            '*'
+        ))
+        ->where('tipo_archivo_id','=', $id)
+        ->get();
+        return $object;
     }
 
     /**

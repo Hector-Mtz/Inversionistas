@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('tipo_archivos', function (Blueprint $table) {
             $table->id();
+            $table->string('nombreTipoArchivo');
             $table->timestamps();
         });
     }
