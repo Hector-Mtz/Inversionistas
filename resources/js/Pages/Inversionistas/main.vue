@@ -12,6 +12,7 @@
 
     var props = defineProps({});
     
+    //sincro
     const archivo = useForm
     ({
     nombreArchivo: '',
