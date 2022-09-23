@@ -39,7 +39,9 @@ class ArchivoController extends Controller
     {
         //
         if($request->hasFile(key:'archivo'))
-        {
+        //http://inversionistas.coorsamexico.mx/storage/archivos/7t8U7YKTzYjN32Ppht97xdSdxnFGvaYulHkxWBtW.xlsx
+        {   //inversionistas.coorsamexico.mx/storage/app/public/archivos/7t8U7YKTzYjN32Ppht97xdSdxnFGvaYulHkxWBtW.xlsx
+            //inversionistas.coorsamexico.mx/storage/app/public/archivos/7t8U7YKTzYjN32Ppht97xdSdxnFGvaYulHkxWBtW.xlsx
            $file = $request->archivo->store('public/archivos'); //guardamos el archivo en el storage
            $datosArchivo =request()->except('archivo'); //recuperamos todo excepto el archivo
            $nombreArchivo = $datosArchivo['nombreArchivo'];
@@ -52,6 +54,8 @@ class ArchivoController extends Controller
            (nombreArchivo, descripcion, status, archivo, autor, tipo_archivo_id) 
            values (?, ?, ?, ?, ?, ?)',
            [$nombreArchivo, $descripcion, $status, $file, $autor, $tipo_archivo]);
+
+        
 
            return  redirect()->back();
         }

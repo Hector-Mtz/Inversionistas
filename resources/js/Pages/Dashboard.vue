@@ -4,12 +4,14 @@ import Welcome from '@/Components/Welcome.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import axios from 'axios';
 import { onMounted, ref, watch } from 'vue';
-import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import { Head, Link, useForm} from '@inertiajs/inertia-vue3';
+import { Inertia } from '@inertiajs/inertia';
 import ModalInver from './Inversionistas/Components/ModalInver.vue';
 import SecondaryButton from '../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Components/SecondaryButton.vue';
 import TextInput from '../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Components/TextInput.vue';
 import InputLabel from '../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Components/InputLabel.vue';
-//import ButtonCalendar from './Inversionistas/Components/ButtonCalendar.vue';
+import ButtonCalendar from '../Components/ButtonCalendar.vue';
+
 
 var props = defineProps({
     users:Object,
@@ -20,22 +22,32 @@ var props = defineProps({
 for (let index = 0; index < props.archivos.length; index++) {
         console.log(props.archivos[index]);
         props.archivos[index].archivo
-        props.archivos[index].archivo = "storage/archivos/"+props.archivos[index].archivo.slice(16);
+        props.archivos[index].archivo = "storage/archivos/"+props.archivos[index].archivo.slice(25);
     }
 
-const filtro = (id,nombre) =>
+const filtro = (id) =>
 {
-    props.archivos = [];
-    
+    Inertia.visit(route('dashboard'), {
+        data: {
+            tipo_archivo_id:id
+        },
+        preserveState: true,
+        preserveScroll: true,
+        only: ['archivos'],
+    })
 }
 
+let date = ref({month:new Date().getMonth(), year: new Date().getFullYear()});
+
+const changeDate = (newDate) => {
+    date.value = newDate
+    //
+}
 
 const cat = useForm
     ({
       nombreTipoArchivo: '',
     });
-
-
 
 const enviatCat = () =>
 {
@@ -66,7 +78,9 @@ const closeModal = () =>
                 Proyecto camiones de patio
             </h2>
         </template>
-        
+        <div class="flex items-center justify-around">
+                <ButtonCalendar :month="date.month" :year="date.year" @change-date="changeDate($event)" />
+            </div>
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
@@ -76,7 +90,7 @@ const closeModal = () =>
                     
                     <div class="row">
                         <div class="col-2" style="float:left;margin-left: 1rem;" v-for="item in tipoArchivos" :key="item.id">
-                          <PrimaryButton @click="filtro(item.id,item.nombreTipoArchivo)" >
+                          <PrimaryButton @click="filtro(item.id)">
                             {{item.nombreTipoArchivo}}
                           </PrimaryButton>
                         </div>  

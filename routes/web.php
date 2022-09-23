@@ -8,8 +8,10 @@ use App\Models\archivo;
 use App\Models\tipoArchivo;
 use App\Models\User;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -39,11 +41,20 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/dashboard', function (Request $request) {
+        $archivos = archivo::select('archivos.*');
+        if($request->has('tipo_archivo_id'))
+        {
+            $archivos->where('tipo_archivo_id','=',$request['tipo_archivo_id']);
+        }
         $users = User::all();
         $tipoArchivos = tipoArchivo::all();
-        $archivos = archivo::all();
-        return Inertia::render('Dashboard',[ 'users' => $users, 'tipoArchivos'=> $tipoArchivos, 'archivos'=>$archivos]);
+        
+        return Inertia::render('Dashboard',[ 
+            'users' => $users, 
+        'tipoArchivos'=> $tipoArchivos, 
+        'archivos' => fn () => $archivos->get(),
+    ]);
     })->name('dashboard');
 });
 
